@@ -1,9 +1,9 @@
 /****
  * Restify Model
- * https://github.com/bytecipher/restify-model
+ * https://github.com/baseprime/restify-model
  * 
- * @author Greg Sabia Tucker <greg@bytecipher.io>
- * @link http://bytecipher.io
+ * @author Greg Sabia Tucker <greg@narrowlabs.com>
+ * @link http://basepri.me
  *
  * Released under MIT License. See LICENSE or http://opensource.org/licenses/MIT
  */
@@ -94,8 +94,10 @@ Collection.prototype.count = function() {
 Collection.prototype.with = function(iterator) {
   assert.func(iterator, 'with.iterator');
 
+  var fn = iterator.bind(this);
+
   return this.extend({
-    collection: this.filter(iterator)
+    collection: this.filter(fn)
   });
 }
 
@@ -114,7 +116,7 @@ Collection.prototype.detect = function(iterator) {
 Collection.prototype.each = function(iterator, context) {
   assert.func(iterator, 'each.iterator');
 
-  var all = this.all()
+  var all = this.all();
 
   for (var i = 0, length = all.length; i < length; i++) {
     iterator.call(context || all[i], all[i], i, all)
